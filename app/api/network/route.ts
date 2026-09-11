@@ -1,0 +1,3 @@
+import {database,publicProfile,noCache,type ProfileRow} from '@/lib/kolab-db';
+export const dynamic='force-dynamic';
+export async function GET(){try{const db=database();const [rows,count]=await db.batch([db.prepare('SELECT id,name,city,role,bio,interests FROM profiles WHERE visible=1 ORDER BY created_at DESC LIMIT 500'),db.prepare('SELECT COUNT(*) AS total FROM profiles WHERE visible=1')]);return Response.json({members:(rows.results as unknown as ProfileRow[]).map(publicProfile),total:(count.results[0] as {total:number}|undefined)?.total??0},{headers:noCache});}catch(e){console.error('Network read failed',e);return Response.json({error:'No pudimos cargar los perfiles. Intenta de nuevo.'},{status:503,headers:noCache});}}
