@@ -7,6 +7,7 @@
 - Sin clave `service_role` o contraseña PostgreSQL en el runtime; sin credenciales en el cliente.
 - Validación de datos tanto en Next.js/Zod como en SQL; consultas parametrizadas y transacciones para guardar perfil y contacto juntos.
 - Cookies HttpOnly, Secure en producción, SameSite=Lax, sin tokens en localStorage.
+- Las operaciones privadas comprueban también `session_id` contra `auth.sessions`: una sesión eliminada al cerrar acceso, vencida o de otra cuenta no permite leer/modificar contactos aunque su JWT conserve validez criptográfica.
 - Control estricto de origen en mutaciones y consultas privadas POST; límite de 8 KiB durante lectura del cuerpo, también sin Content-Length.
 - Sin caché de sesiones/contactos; búsquedas administrativas en cuerpo POST para no poner teléfonos/correos en URLs y logs.
 - CSP con nonce por respuesta, bloqueo de iframes externos del sitio, `nosniff`, HSTS y políticas restrictivas de cámara, micrófono y ubicación. Se permite `style-src 'unsafe-inline'` para los componentes visuales; producción no permite scripts inline sin nonce ni `unsafe-eval`.
@@ -22,6 +23,12 @@ Las pruebas PostgreSQL ejecutan la migración real en PGlite con roles `anon` y 
 Esto no es una certificación ni una garantía absoluta. SMTP, CAPTCHA, firma y renovación de sesiones reales, restauraciones y configuración de los proveedores se validan en el entorno desplegado. El dominio canónico debe configurarse explícitamente. Los nombres e intereses publicados son datos públicamente consultables y pueden copiarse.
 
 ## Mantenimiento
+
+### Avisos del asesor de Supabase
+
+La revisión de la base desplegada señala RLS sin políticas en las cinco tablas privadas y funciones `SECURITY DEFINER` ejecutables por los roles API. Es intencional: las tablas niegan acceso directo y las funciones son el único acceso acotado. La función anónima `kolab_network` devuelve exclusivamente identificador público, nombre e intereses de perfiles visibles; las demás exigen identidad, sesión activa y, para contactos administrativos, rol explícito y AAL2. Mantener estos avisos documentados y revisar cada nueva función; no conceder permisos a tablas para silenciarlos. [RLS sin políticas](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy), [funciones anónimas](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable), [funciones autenticadas](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable).
+
+### Rutina de operación
 
 - Mantener MFA también en GitHub, Supabase y Vercel; conceder acceso solo a responsables necesarios.
 - Revisar actualizaciones Dependabot y avisos de Next.js/Supabase. La actualización de esta migración utiliza Next.js 16.3.5, posterior al [aviso de agosto de 2026](https://nextjs.org/blog/august-2026-security-release).

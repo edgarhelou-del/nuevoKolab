@@ -7,7 +7,7 @@ import {
   expect,
 } from "vitest";
 import { PGlite } from "@electric-sql/pglite";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 const db = new PGlite();
 const alice = "11111111-1111-4111-8111-111111111111",
   bob = "22222222-2222-4222-8222-222222222222",
@@ -27,13 +27,15 @@ const profile = {
 beforeAll(async () => {
   await db.exec(`create role anon; create role authenticated; create schema auth;
     create table auth.users(id uuid primary key, email text, email_confirmed_at timestamptz, banned_until timestamptz);
+    create table auth.sessions(id uuid primary key, user_id uuid references auth.users, not_after timestamptz);
     create function auth.uid() returns uuid language sql stable as $$ select (nullif(current_setting('request.jwt.claims', true), '')::jsonb->>'sub')::uuid $$;
     create function auth.jwt() returns jsonb language sql stable as $$ select nullif(current_setting('request.jwt.claims', true), '')::jsonb $$;
     grant usage on schema public to anon, authenticated;
     insert into auth.users values ('${alice}','alice@example.test',now(),null),('${bob}','bob@example.test',now(),null),('${admin}','admin@example.test',now(),null),('${unverified}','unverified@example.test',null,null);`);
-  await db.exec(
-    readFileSync("supabase/migrations/202609120001_kolab.sql", "utf8"),
-  );
+  await db.exec("insert into auth.sessions(id, user_id) select id, id from auth.users");
+  for (const file of readdirSync("supabase/migrations").filter((f) => f.endsWith(".sql")).sort()) {
+    await db.exec(readFileSync(`supabase/migrations/${file}`, "utf8"));
+  }
   await db.query("insert into kolab_private.admin_users(user_id) values ($1)", [
     admin,
   ]);
@@ -48,7 +50,7 @@ afterEach(async () => {
 async function asUser(id: string | null, aal = "aal1", metadata = {}) {
   await db.exec("reset role");
   await db.query("select set_config('request.jwt.claims', $1, true)", [
-    JSON.stringify({ sub: id, aal, user_metadata: metadata }),
+    JSON.stringify({ sub: id, session_id: id, aal, user_metadata: metadata }),
   ]);
   await db.exec(id ? "set local role authenticated" : "set local role anon");
 }
@@ -134,6 +136,28 @@ test("unverified users cannot create profiles even with an authenticated role", 
   await denied("select public.kolab_save_profile($1::jsonb)", "42501", [
     JSON.stringify(profile),
   ]);
+});
+test("sign-out revokes private access even while a previously issued JWT remains valid", async () => {
+  await asUser(alice);
+  await save();
+  await db.exec("reset role");
+  await db.query("delete from auth.sessions where user_id in ($1, $2)", [alice, admin]);
+  await asUser(alice);
+  await denied("select public.kolab_my_profile()");
+  await denied("select public.kolab_delete_profile()");
+  await denied("select public.kolab_save_profile($1::jsonb)", "42501", [JSON.stringify(profile)]);
+  await asUser(admin, "aal2");
+  await denied("select public.kolab_admin_status()");
+  await denied("select public.kolab_admin_members()");
+});
+test("expired sessions and sessions belonging to another account cannot access contacts", async () => {
+  await db.query("update auth.sessions set not_after = now() - interval '1 second' where user_id = $1", [alice]);
+  await asUser(alice);
+  await denied("select public.kolab_my_profile()");
+  await db.exec("reset role");
+  await db.query("update auth.sessions set user_id = $1, not_after = null where id = $2", [bob, alice]);
+  await asUser(alice);
+  await denied("select public.kolab_my_profile()");
 });
 test("public RPC validates consent, tags, lengths and types independently of frontend", async () => {
   await asUser(alice);

@@ -3,7 +3,7 @@
 ## 1. Preparar Supabase
 
 1. Crear un proyecto dedicado, en una región adecuada para los integrantes. Mantener otro proyecto para pruebas; no conectar previews públicos a los datos de producción.
-2. Ejecutar una sola vez `supabase/migrations/202609120001_kolab.sql` en el SQL Editor del proyecto. Todo el cambio es transaccional. Para posteriores cambios, añadir otra migración; no editar una ya aplicada.
+2. En una base nueva, ejecutar las migraciones de `supabase/migrations/` en orden de nombre, una sola vez. Cada cambio es transaccional. Para posteriores cambios, añadir otra migración; no editar una ya aplicada. En la base existente de nuevoKolab ya están aplicadas las dos migraciones que figuran al final de este documento.
 3. Dejar `kolab_private` fuera de los esquemas expuestos de la Data API. No conceder acceso a sus tablas ni usar `service_role` en Vercel.
 4. En Authentication, habilitar correo y MFA TOTP. Deshabilitar accesos anónimos. Configurar el Site URL con el dominio canónico definitivo.
 5. Configurar SMTP propio con remitente autorizado y su DNS (SPF/DKIM/DMARC). El correo integrado de prueba de Supabase no debe usarse como servicio público de producción. [Documentación SMTP](https://supabase.com/docs/guides/auth/auth-smtp).
@@ -58,6 +58,18 @@ En la comprobación del 12 de septiembre de 2026, la base anterior contenía un 
 
 Esta migración conserva el contenido editorial; **no importa automáticamente registros D1 ni convierte identidades ChatGPT en identidades Supabase**. Antes del cambio de dominio, comprobar si existen perfiles reales en D1. Si existen, hacer una exportación privada y verificar cómo vincular cada persona con su nuevo correo confirmado; no inferir correos ni asignar perfiles por nombre. Solicitar de nuevo el consentimiento de visibilidad/contacto cuando corresponda. No cargar bases o exportaciones con personas en GitHub.
 
-## Estado que requiere acceso a tus cuentas
+## Estado comprobado el 12 de septiembre de 2026
 
-El repositorio incluye código, migración, pruebas y configuración. Crear el proyecto externo, aplicar SQL, SMTP/DNS, CAPTCHA, asignar administrador y desplegar requieren las cuentas de los proveedores. Las pruebas locales no acreditan que esos pasos ya estén hechos.
+- Supabase `nuevoKolab` creado y activo en `us-east-1`, referencia `ouomltjrkhdeggiwbgun`, URL `https://ouomltjrkhdeggiwbgun.supabase.co`. Plan gratuito, creación confirmada con coste mensual de 0 USD; servicios adicionales no contratados.
+- Migraciones aplicadas con la conexión de Supabase y permisos consultados en la base real: ni `anon` ni `authenticated` pueden usar `kolab_private`; `anon` no puede ejecutar la consulta administrativa. Red nueva vacía, sin usuarios registrados todavía.
+- La conexión asigna su propia versión a cada migración. No repetirlas ni ejecutar `db push` sin reconciliar primero el historial con los archivos locales:
+
+| Archivo local | Versión registrada en Supabase | Nombre remoto |
+|---|---|---|
+| `202609120001_kolab.sql` | `20260912190242` | `kolab_private_network` |
+| `20260912191743_secure_active_sessions.sql` | `20260912193335` | `secure_active_sessions` |
+
+- Vercel conectado y cuenta comprobada. Publicación pendiente de configuración de entorno y autenticación.
+- Pendientes: correo SMTP y sus plantillas/DNS, CAPTCHA, URL final, administrador verificado con MFA, respaldo/restauración y prueba completa del registro en el despliegue. El perfil de la versión anterior sigue conservado allí y requiere vinculación verificada.
+
+Las pruebas locales y de permisos no acreditan que el sitio ya esté publicado ni que el correo funcione en producción.
