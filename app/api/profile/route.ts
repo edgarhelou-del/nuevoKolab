@@ -1,8 +1,36 @@
-import {getChatGPTUser} from '@/app/chatgpt-auth';
-import {database,publicProfile,noCache,sameOrigin,type ProfileRow} from '@/lib/kolab-db';
-import {z} from 'zod';
-export const dynamic='force-dynamic';
-const schema=z.object({name:z.string().trim().min(2).max(70),city:z.string().trim().max(80),role:z.string().trim().min(2).max(100),bio:z.string().trim().max(500),interests:z.array(z.enum(['Cultura','Arte','Tecnología','Naturaleza'])).min(1).max(4).transform(a=>[...new Set(a)]),visible:z.boolean(),consent:z.literal(true)});
-export async function GET(){const user=await getChatGPTUser();if(!user)return Response.json({error:'Inicia sesión para ver tu perfil.'},{status:401,headers:noCache});try{const row=await database().prepare('SELECT * FROM profiles WHERE user_id=?').bind(user.userId).first<ProfileRow>();return Response.json({profile:row?{...publicProfile(row),visible:!!row.visible}:null},{headers:noCache});}catch(e){console.error('Profile read failed',e);return Response.json({error:'Tu perfil no está disponible por el momento.'},{status:503,headers:noCache});}}
-export async function POST(request:Request){const user=await getChatGPTUser();if(!user)return Response.json({error:'Inicia sesión antes de guardar.'},{status:401,headers:noCache});if(!sameOrigin(request))return Response.json({error:'Solicitud no permitida.'},{status:403});try{const body=await request.text();if(body.length>8000)return Response.json({error:'El perfil es demasiado largo.'},{status:413});let input;try{input=JSON.parse(body);}catch{return Response.json({error:'Revisa los datos del formulario.'},{status:400});}const parsed=schema.safeParse(input);if(!parsed.success)return Response.json({error:'Completa tu nombre, tu rol, al menos un interés y el consentimiento.'},{status:400});const p=parsed.data;await database().prepare('INSERT INTO profiles (user_id,id,name,city,role,bio,interests,visible,consent_at) VALUES (?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP) ON CONFLICT(user_id) DO UPDATE SET name=excluded.name,city=excluded.city,role=excluded.role,bio=excluded.bio,interests=excluded.interests,visible=excluded.visible,updated_at=CURRENT_TIMESTAMP').bind(user.userId,crypto.randomUUID(),p.name,p.city,p.role,p.bio,JSON.stringify(p.interests),p.visible?1:0).run();const row=await database().prepare('SELECT * FROM profiles WHERE user_id=?').bind(user.userId).first<ProfileRow>();return Response.json({profile:{...publicProfile(row!),visible:!!row!.visible}},{headers:noCache});}catch(e){console.error('Profile save failed',e);return Response.json({error:'No pudimos guardar tu perfil. Tus cambios siguen aquí; inténtalo de nuevo.'},{status:503,headers:noCache});}}
-export async function DELETE(request:Request){const user=await getChatGPTUser();if(!user)return Response.json({error:'Inicia sesión para retirar tu perfil.'},{status:401});if(!sameOrigin(request))return Response.json({error:'Solicitud no permitida.'},{status:403});try{await database().prepare('DELETE FROM profiles WHERE user_id=?').bind(user.userId).run();return Response.json({deleted:true},{headers:noCache});}catch(e){console.error('Profile removal failed',e);return Response.json({error:'No pudimos retirar el perfil. Intenta de nuevo.'},{status:503});}}
+import { requireUser } from "@/lib/server/auth";
+import {
+  ownProfile,
+  saveProfile,
+  deleteProfile,
+} from "@/lib/server/repositories/members";
+import { profileSchema } from "@/lib/contracts/member";
+import { json, failure, readJson, assertOrigin } from "@/lib/server/http";
+export const dynamic = "force-dynamic";
+export async function GET() {
+  try {
+    const { db } = await requireUser();
+    return json({ profile: await ownProfile(db) });
+  } catch (error) {
+    return failure(error);
+  }
+}
+export async function POST(request: Request) {
+  try {
+    const input = await readJson(request, profileSchema);
+    const { db } = await requireUser();
+    return json({ profile: await saveProfile(db, input) });
+  } catch (error) {
+    return failure(error);
+  }
+}
+export async function DELETE(request: Request) {
+  try {
+    assertOrigin(request);
+    const { db } = await requireUser();
+    await deleteProfile(db);
+    return json({ deleted: true });
+  } catch (error) {
+    return failure(error);
+  }
+}

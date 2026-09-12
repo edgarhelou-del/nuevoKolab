@@ -5,6 +5,13 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  { rules: {
+    // Full document navigation renews nonce-based CSP and prevents prefetched account snapshots.
+    '@next/next/no-html-link-for-pages': 'off',
+    '@next/next/no-location-assign-relative-destination': 'off',
+    // Existing images are locally optimized; MFA QR codes are provider-generated data URLs.
+    '@next/next/no-img-element': 'off',
+  } },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
