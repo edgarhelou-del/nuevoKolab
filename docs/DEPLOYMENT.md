@@ -70,6 +70,8 @@ Esta migración conserva el contenido editorial; **no importa automáticamente r
 | `20260912191743_secure_active_sessions.sql` | `20260912193335` | `secure_active_sessions` |
 
 - Vercel conectado y cuenta comprobada. Publicación pendiente de configuración de entorno y autenticación.
+- Acceso al panel de Supabase completado. Confirmación de correo activada, accesos anónimos desactivados y MFA TOTP habilitado; el proveedor limita las sesiones AAL1 sin completar MFA a 15 minutos. OTP de correo configurado y verificado en 600 segundos, conservando 8 dígitos.
+- El panel exige SMTP propio antes de editar las plantillas de correo. Se comprobó una credencial de Resend limitada a envíos: no permite listar dominios, por lo que aún debe confirmarse el dominio remitente verificado. SMTP no está activado. La configuración prevista es `smtp.resend.com:465` con TLS, usuario `resend`, nombre `Kolab` y mínimo de 60 segundos entre envíos por cuenta; la clave se guarda exclusivamente en la configuración cifrada del proveedor. CAPTCHA sigue desactivado en Supabase; se requiere acceso autorizado a Cloudflare para crear y vincular Turnstile. La aplicación mantiene el bloqueo de registro en producción sin CAPTCHA.
 - Pendientes: correo SMTP y sus plantillas/DNS, CAPTCHA, URL final, administrador verificado con MFA, respaldo/restauración y prueba completa del registro en el despliegue. El perfil de la versión anterior sigue conservado allí y requiere vinculación verificada.
 
 Las pruebas locales y de permisos no acreditan que el sitio ya esté publicado ni que el correo funcione en producción.
