@@ -8,19 +8,13 @@ export async function POST(request: Request) {
       z
         .object({
           email: z.string().trim().email().max(254),
-          captchaToken: z.string().max(4096).optional(),
         })
         .strict(),
     );
-    if (
-      process.env.NODE_ENV === "production" &&
-      (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || !p.captchaToken)
-    )
-      throw new HttpError(400, "Completa la verificación de seguridad.");
     const db = await sessionDatabase();
     const { error } = await db.auth.signInWithOtp({
       email: p.email,
-      options: { shouldCreateUser: true, captchaToken: p.captchaToken },
+      options: { shouldCreateUser: true },
     });
     if (error)
       throw new HttpError(

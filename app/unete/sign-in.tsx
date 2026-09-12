@@ -1,42 +1,17 @@
 "use client";
-import { useState, useRef, type FormEvent } from "react";
-import Script from "next/script";
+import { useState, type FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { post } from "@/lib/client/api";
-type Turnstile = {
-  render: (element: HTMLElement, options: Record<string, unknown>) => string;
-  reset: (id: string) => void;
-};
 export default function SignIn({
-  nonce,
   destination = "/unete",
 }: {
-  nonce: string;
   destination?: "/unete" | "/admin";
 }) {
   const [email, setEmail] = useState(""),
     [token, setToken] = useState(""),
     [sent, setSent] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState(""),
-    [error, setError] = useState(""),
+  const [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
-  const captcha = useRef<HTMLDivElement>(null),
-    widget = useRef<string | null>(null);
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const renderCaptcha = () => {
-    const api = (window as unknown as { turnstile?: Turnstile }).turnstile;
-    if (api && captcha.current && widget.current === null)
-      widget.current = api.render(captcha.current, {
-        sitekey: siteKey,
-        theme: "dark",
-        callback: (value: string) => setCaptchaToken(value),
-        "expired-callback": () => setCaptchaToken(""),
-        "error-callback": () => {
-          setCaptchaToken("");
-          setError("Recarga la página para repetir la verificación.");
-        },
-      });
-  };
   async function submit(event: FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -46,22 +21,13 @@ export default function SignIn({
         await post("/api/auth/verify", { email, token });
         window.location.assign(destination);
       } else {
-        await post("/api/auth/otp", {
-          email,
-          captchaToken: captchaToken || undefined,
-        });
+        await post("/api/auth/otp", { email });
         setSent(true);
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "No pudimos iniciar sesión.");
     } finally {
       setBusy(false);
-      if (!sent && widget.current !== null) {
-        (window as unknown as { turnstile?: Turnstile }).turnstile?.reset(
-          widget.current,
-        );
-        setCaptchaToken("");
-      }
     }
   }
   return (
@@ -103,16 +69,6 @@ export default function SignIn({
           />
         </>
       )}
-      {siteKey && (
-        <>
-          <Script
-            src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-            nonce={nonce}
-            onReady={renderCaptcha}
-          />
-          <div ref={captcha} hidden={sent} />
-        </>
-      )}
       {error && (
         <p className="form-error" role="alert">
           {error}
@@ -120,7 +76,7 @@ export default function SignIn({
       )}
       <button
         className="primary-button"
-        disabled={busy || (!sent && !!siteKey && !captchaToken)}
+        disabled={busy}
       >
         {busy ? "Un momento…" : sent ? "Entrar a Kolab" : "Recibir código"}
       </button>

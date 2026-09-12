@@ -5,12 +5,12 @@ export async function proxy(request: NextRequest) {
   const dev = process.env.NODE_ENV !== "production";
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${dev ? " 'unsafe-eval'" : ""} https://challenges.cloudflare.com`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${dev ? " 'unsafe-eval'" : ""}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
-    `connect-src 'self' https://challenges.cloudflare.com${dev ? " ws: http://localhost:*" : ""}`,
-    "frame-src https://challenges.cloudflare.com",
+    `connect-src 'self'${dev ? " ws: http://localhost:*" : ""}`,
+    "frame-src 'none'",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

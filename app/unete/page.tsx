@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { currentUser } from "@/lib/server/auth";
 import ProfileForm from "./profile-form";
 import SignIn from "./sign-in";
@@ -13,7 +12,6 @@ export default async function Join() {
   const configured =
     !!process.env.SUPABASE_URL && !!process.env.SUPABASE_PUBLISHABLE_KEY;
   const session = configured ? await currentUser() : null;
-  const nonce = (await headers()).get("x-nonce") || "";
   return (
     <main className="join-page">
       <a href="/" className="logo">
@@ -69,7 +67,7 @@ export default async function Join() {
               <ProfileForm defaultName="" email={session.user.email || ""} />
             </>
           ) : (
-            <SignIn nonce={nonce} />
+            <SignIn />
           )}
         </div>
       </div>

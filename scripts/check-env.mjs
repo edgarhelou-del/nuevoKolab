@@ -4,7 +4,6 @@ if (process.env.VERCEL) {
     "APP_URL",
     "SUPABASE_URL",
     "SUPABASE_PUBLISHABLE_KEY",
-    "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
   ];
   const missing = required.filter(
     (key) =>

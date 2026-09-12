@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { currentUser, adminStatus } from "@/lib/server/auth";
 import SignIn from "../unete/sign-in";
 import SignOut from "../unete/sign-out";
@@ -14,7 +13,6 @@ export default async function Admin() {
     !!process.env.SUPABASE_URL && !!process.env.SUPABASE_PUBLISHABLE_KEY;
   const session = configured ? await currentUser() : null;
   const status = session ? await adminStatus(session.db) : null;
-  const nonce = (await headers()).get("x-nonce") || "";
   return (
     <main className="admin-page">
       <header className="admin-header">
@@ -34,7 +32,7 @@ export default async function Admin() {
         </p>
       ) : !session ? (
         <div className="admin-auth">
-          <SignIn nonce={nonce} destination="/admin" />
+          <SignIn destination="/admin" />
         </div>
       ) : !status?.admin ? (
         <p role="alert">

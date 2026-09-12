@@ -1,8 +1,8 @@
 import { beforeEach, afterEach, expect, test, vi } from "vitest";
-const mock = vi.hoisted(() => ({ getUser: vi.fn(), rpc: vi.fn() }));
+const mock = vi.hoisted(() => ({ getUser: vi.fn(), rpc: vi.fn(), signInWithOtp: vi.fn() }));
 vi.mock("@/lib/server/supabase", () => ({
   sessionDatabase: async () => ({
-    auth: { getUser: mock.getUser },
+    auth: { getUser: mock.getUser, signInWithOtp: mock.signInWithOtp },
     rpc: mock.rpc,
   }),
 }));
@@ -12,10 +12,12 @@ import {
 } from "@/app/api/profile/route";
 import { POST as adminPost } from "@/app/api/admin/members/route";
 import { requireAdmin } from "@/lib/server/auth";
+import { POST as requestOtp } from "@/app/api/auth/otp/route";
 beforeEach(() => {
   vi.stubEnv("APP_URL", "https://kolab.example");
   mock.getUser.mockReset();
   mock.rpc.mockReset();
+  mock.signInWithOtp.mockReset();
 });
 afterEach(() => vi.unstubAllEnvs());
 const request = (
@@ -37,6 +39,24 @@ const verified = () =>
     data: { user: { id: "verified-user", email_confirmed_at: "2026-09-12" } },
     error: null,
   });
+test("production sign-in accepts email without an external challenge", async () => {
+  vi.stubEnv("NODE_ENV", "production");
+  mock.signInWithOtp.mockResolvedValue({ error: null });
+  const response = await requestOtp(request("/api/auth/otp", { email: "test@example.test" }));
+  expect(response.status).toBe(200);
+  expect(mock.signInWithOtp).toHaveBeenCalledWith({ email: "test@example.test", options: { shouldCreateUser: true } });
+});
+test("OTP requests preserve provider rate limits and generic errors", async () => {
+  mock.signInWithOtp.mockResolvedValue({ error: { status: 429, message: "private provider detail" } });
+  const response = await requestOtp(request("/api/auth/otp", { email: "test@example.test" }));
+  expect(response.status).toBe(429);
+  expect(await response.text()).not.toContain("private provider detail");
+});
+test("OTP requests from another origin cannot trigger an email", async () => {
+  const response = await requestOtp(request("/api/auth/otp", { email: "test@example.test" }, { Origin: "https://attacker.example" }));
+  expect(response.status).toBe(403);
+  expect(mock.signInWithOtp).not.toHaveBeenCalled();
+});
 test("no verified provider session means 401 even with former ChatGPT identity headers", async () => {
   mock.getUser.mockResolvedValue({
     data: { user: null },
