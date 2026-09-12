@@ -1,0 +1,193 @@
+{
+  "source": "https://www.kolabestudio.com",
+  "retrieved": "2026-09-12",
+  "pages": [
+    {
+      "path": "/",
+      "title": "Transformamos la colaboración en cultura y la cultura en resultados.",
+      "wordCount": 675,
+      "contentSha256": "dcbca343cdaaa42e6f39fc270cf6f3b09b573dbc29ff4a94b01ab0158d3c5eda",
+      "images": 4
+    },
+    {
+      "path": "/contacto",
+      "title": "Empecemos una conversación.",
+      "wordCount": 108,
+      "contentSha256": "70faffa733f084f1d561fc1352767fab124703e46d9adb02a1da24edff701904",
+      "images": 0
+    },
+    {
+      "path": "/en",
+      "title": "We turn collaboration into culture and culture into results.",
+      "wordCount": 628,
+      "contentSha256": "2c158d062db5e0bea56034cda3f14ae15b9c409d2a6df550e9367a8699db0c09",
+      "images": 4
+    },
+    {
+      "path": "/en/contacto",
+      "title": "Let's start a conversation.",
+      "wordCount": 113,
+      "contentSha256": "6c7d41713d0f346504307909aaa24353f2af4f06923a107560945f990f4c8cea",
+      "images": 0
+    },
+    {
+      "path": "/en/herramientas",
+      "title": "What we work with.",
+      "wordCount": 333,
+      "contentSha256": "a1d2397b5c05e7b359fbdf3a06f84de3d151be8aeb97902813d15b8d70e535e2",
+      "images": 7
+    },
+    {
+      "path": "/en/ideas",
+      "title": "Lab",
+      "wordCount": 156,
+      "contentSha256": "282906b3800b148d4bfe19c6d89386e9c0c4bc7d58d1774365b2458cc6cbb3ce",
+      "images": 3
+    },
+    {
+      "path": "/en/ideas/inteligencia-colectiva",
+      "title": "Inteligencia colectiva: cuando el grupo sabe más que sus miembros",
+      "wordCount": 1114,
+      "contentSha256": "183658a2d52d5973e974b70ba2d534e3e730a95285000ed9954876311615c51b",
+      "images": 1
+    },
+    {
+      "path": "/en/ideas/rituales-que-sostienen",
+      "title": "Los rituales que sostienen una cultura",
+      "wordCount": 755,
+      "contentSha256": "630d4d277cf93ac96a6d865b36e3a95d48f936ed025b5d1c7bf33cd3ac891bd3",
+      "images": 1
+    },
+    {
+      "path": "/en/ideas/seguridad-psicologica",
+      "title": "La seguridad psicológica no es un lujo, es infraestructura",
+      "wordCount": 921,
+      "contentSha256": "e03d664a93bb9ea36fe752a2392f3bae64e092573067c4911204f651426afe0e",
+      "images": 1
+    },
+    {
+      "path": "/en/quienes-somos",
+      "title": "We believe collaboration is designed, not decreed.",
+      "wordCount": 636,
+      "contentSha256": "e20e89d7f238bf19a5ad5663c64385dc238bd1a430bf70cc2e1d6b113effb560",
+      "images": 3
+    },
+    {
+      "path": "/en/servicios",
+      "title": "Three ways to build collaboration that lasts.",
+      "wordCount": 247,
+      "contentSha256": "47fbebfa57b715ae740e1a4778f95b40e14e742f5d94258c1257a60243a2031f",
+      "images": 0
+    },
+    {
+      "path": "/en/servicios/conferencias",
+      "title": "Keynotes",
+      "wordCount": 252,
+      "contentSha256": "683c37eba74e3be5c636f5d0acc0b728085bf2a620c52b09b81a3dee92bbd430",
+      "images": 1
+    },
+    {
+      "path": "/en/servicios/consultoria",
+      "title": "Culture consulting",
+      "wordCount": 258,
+      "contentSha256": "da1a7327fc465e8e9ef9b91c27d9156d46f7e508b03ae54163aff53b91a1b109",
+      "images": 1
+    },
+    {
+      "path": "/en/servicios/talleres",
+      "title": "Workshops",
+      "wordCount": 264,
+      "contentSha256": "1004c3d00f1359c1a3d49732d3e28767667b31681befa38c1e880e9ffd9148eb",
+      "images": 1
+    },
+    {
+      "path": "/herramientas",
+      "title": "Con qué trabajamos.",
+      "wordCount": 343,
+      "contentSha256": "d414fb49d392d1a96109749eb8d00f37acee08b0706cec08853decc6a7509041",
+      "images": 7
+    },
+    {
+      "path": "/ideas",
+      "title": "Laboratorio",
+      "wordCount": 156,
+      "contentSha256": "ee9bbd8731f53beb32e09c10ae7973b7b23c70856be4bea8862da46a578cc715",
+      "images": 3
+    },
+    {
+      "path": "/ideas/inteligencia-colectiva",
+      "title": "Inteligencia colectiva: cuando el grupo sabe más que sus miembros",
+      "wordCount": 1108,
+      "contentSha256": "69b9ae38cb0e771c947b74f4f946276f8789b21bd4fe44b4d266cc94fe06ca69",
+      "images": 1
+    },
+    {
+      "path": "/ideas/rituales-que-sostienen",
+      "title": "Los rituales que sostienen una cultura",
+      "wordCount": 749,
+      "contentSha256": "4e9f1d76f38aecc35806fbac48644de1b4bfb92aed91a9eef88fcca007f500ae",
+      "images": 1
+    },
+    {
+      "path": "/ideas/seguridad-psicologica",
+      "title": "La seguridad psicológica no es un lujo, es infraestructura",
+      "wordCount": 915,
+      "contentSha256": "b4cd3751e25c926559a2724a6a8dc14a9f92438ec5dfb4e6c0c54ae9072b5807",
+      "images": 1
+    },
+    {
+      "path": "/quienes-somos",
+      "title": "Creemos que la colaboración se diseña, no se decreta.",
+      "wordCount": 660,
+      "contentSha256": "e121813c067778b30fdb89723e6e9637294076c27997357f2d24ea74d20bf2ed",
+      "images": 3
+    },
+    {
+      "path": "/servicios",
+      "title": "Tres formas de construir colaboración que se sostiene.",
+      "wordCount": 262,
+      "contentSha256": "f774541e3090d4b840dc6125627b4da1ce0f493a26da9671f7c8a1ab9599852f",
+      "images": 0
+    },
+    {
+      "path": "/servicios/conferencias",
+      "title": "Conferencias",
+      "wordCount": 266,
+      "contentSha256": "eeaafff730afc47b90ff9375dbfc6e3ae29b6ff74156b2f69ee9a7c1d053f01d",
+      "images": 1
+    },
+    {
+      "path": "/servicios/consultoria",
+      "title": "Consultoría de cultura",
+      "wordCount": 264,
+      "contentSha256": "382e43b1690c0f37859f102e7c95e0ac516ec2c10300e8c2513da23f83826fa8",
+      "images": 1
+    },
+    {
+      "path": "/servicios/talleres",
+      "title": "Talleres",
+      "wordCount": 269,
+      "contentSha256": "44e4f06fdd0cd9a4afb7f830f921ad17a8bf025ad561943c0dfddd86dd781260",
+      "images": 1
+    }
+  ],
+  "assets": {
+    "https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?auto=format&fit=crop&w=1200&q=80": "/images/original/photo-1471107340929-a87cd0f5b5f3.webp",
+    "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1500&q=80": "/images/original/photo-1505373877841-8d25f7d46678.webp",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80": "/images/original/photo-1522071820081-009f0129c71c.webp",
+    "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=1500&q=80": "/images/original/photo-1600880292089-90a7e086ee0c.webp",
+    "https://images.unsplash.com/photo-1622675363311-3e1904dc1885?auto=format&fit=crop&w=1200&q=80": "/images/original/photo-1622675363311-3e1904dc1885.webp",
+    "https://images.unsplash.com/photo-1722963220475-979db2dbf216?auto=format&fit=crop&w=1500&q=80": "/images/original/photo-1722963220475-979db2dbf216.webp",
+    "https://images.unsplash.com/photo-1758873268998-2f77c2d38862?auto=format&fit=crop&w=1200&q=80": "/images/original/photo-1758873268998-2f77c2d38862.webp",
+    "https://images.unsplash.com/photo-1758873268998-2f77c2d38862?auto=format&fit=crop&w=1500&q=80": "/images/original/photo-1758873268998-2f77c2d38862.webp",
+    "https://www.kolabestudio.com/herramientas/circulos-de-palabra.png": "/images/original/circulos-de-palabra.webp",
+    "https://www.kolabestudio.com/herramientas/percusion-ejecutivos.png": "/images/original/percusion-ejecutivos.webp",
+    "https://www.kolabestudio.com/herramientas/storytelling-narrativas.png": "/images/original/storytelling-narrativas.webp",
+    "https://www.kolabestudio.com/herramientas/teatro-corporativo.png": "/images/original/teatro-corporativo.webp",
+    "https://www.kolabestudio.com/ideas/inteligencia-colectiva.png": "/images/original/inteligencia-colectiva.webp",
+    "https://www.kolabestudio.com/ideas/rituales-equipo.png": "/images/original/rituales-equipo.webp",
+    "https://www.kolabestudio.com/ideas/seguridad-psicologica.png": "/images/original/seguridad-psicologica.webp",
+    "https://www.kolabestudio.com/team/ana-maria-parra.jpg": "/images/original/ana-maria-parra.webp",
+    "https://www.kolabestudio.com/team/edgar-helou.jpg": "/images/original/edgar-helou.webp"
+  }
+}

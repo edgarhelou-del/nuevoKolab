@@ -39,8 +39,12 @@ No hay perfiles precargados ni testimonios, clientes o cifras de impacto inventa
 
 ## Contenido y activos
 
-El contenido corporativo se elaboró a partir del contexto de Kolab proporcionado por su fundador. El sitio original no fue recuperable en esta sesión; no se afirma que esta sea una migración textual de él.
+El 12 de septiembre de 2026 se incorporó el contenido de las 24 rutas de https://www.kolabestudio.com, en español e inglés: portada, Quiénes somos, Servicios, sus tres páginas de detalle, Herramientas, Laboratorio, tres artículos completos y Contacto. Se conservan los textos publicados por Kolab, incluidas sus atribuciones y referencias; esta migración no constituye una nueva verificación de las afirmaciones editoriales.
 
-La fotografía `public/images/kolab-collaboration.png` fue generada para este sitio como imagen conceptual; no documenta un evento o cliente real. El resto de la experiencia visual es geometría y visualización de datos original. Moebio fue una referencia conceptual de exploración de redes; no se copió su código ni sus activos.
+`content/original-site.json` contiene el contenido HTML saneado, sin scripts, estilos ni eventos del sitio de origen. `content/migration-manifest.json` registra las rutas y las fuentes de las imágenes. Se cotejaron 581 bloques de contenido y todos los enlaces internos y archivos de imagen. Las imágenes originales se sirven desde el proyecto, optimizadas en WebP. La portada mantiene la red tridimensional y el diseño de la nueva versión.
+
+El formulario de contacto conserva el funcionamiento del sitio original: prepara un correo dirigido a edgar@kolabestudio.com. La persona revisa y envía ese borrador desde su aplicación de correo; el sitio no afirma haber enviado mensajes por sí mismo.
+
+La fotografía `public/images/kolab-collaboration.png` fue generada para este sitio como imagen conceptual; no documenta un evento o cliente real. Las imágenes de `public/images/original/` provienen del sitio anterior de Kolab; sus URL de origen constan en el manifiesto. El resto de la experiencia visual es geometría y visualización de datos original. Moebio fue una referencia conceptual de exploración de redes; no se copió su código ni sus activos.
 
 Contacto público: edgar@kolabestudio.com.
