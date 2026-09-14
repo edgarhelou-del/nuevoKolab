@@ -33,3 +33,8 @@
 /* Center the reference octogram beside the wordmark. */
 .logo{display:inline-flex;align-items:center}.logo span{width:40px;height:40px;margin:0 0 0 10px;vertical-align:middle}
 @media(max-width:650px){.logo span{width:32px;height:32px;margin:0 0 0 8px}}
+
+/* Apply the same line octogram to every decorative brand flower. */
+.tiny-cross,.large-star,.lab-heading h1>span{display:inline-block;flex-shrink:0;font-size:0;background:var(--lime);-webkit-mask:url('/octogram.svg') center/contain no-repeat;mask:url('/octogram.svg') center/contain no-repeat}
+.tiny-cross{width:28px;height:28px}.large-star{width:72px;height:72px}.lab-heading h1>span{width:.7em;height:.7em;min-width:52px;min-height:52px;margin-left:18px;vertical-align:middle}
+.team-experience{border-top:1px solid #ffffff24;margin-top:24px;padding-top:22px}.team-experience strong{display:block;font-size:clamp(36px,4vw,56px);font-weight:400;letter-spacing:-.04em;color:var(--lime);margin-bottom:12px}.team-experience p{max-width:34ch}
