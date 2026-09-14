@@ -29,3 +29,7 @@
 .logo span{font-size:0;width:32px;height:32px;margin:4px 0 0 10px;vertical-align:top;background:var(--lime);-webkit-mask:url('/octogram.svg') center/contain no-repeat;mask:url('/octogram.svg') center/contain no-repeat}
 .team-portraits{border-top:1px solid #ffffff24}.team-portraits h2{font-size:clamp(42px,5vw,78px);font-weight:400;line-height:1.05;letter-spacing:-.05em;margin:38px 0 48px}.team-portraits h2 em{color:var(--lime);font-style:normal}.team-portrait-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}.team-portrait-grid figure{margin:0;overflow:hidden;aspect-ratio:1/1;background:#242b20}.team-portrait-grid img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 30%}.team-portrait-grid h3{font-size:30px;font-weight:400;letter-spacing:-.03em;margin:23px 0 10px}.team-portrait-grid p{color:#b6c3a9;font-size:14px;line-height:1.6;margin:0}
 @media(max-width:650px){.logo span{width:26px;height:26px;margin-left:8px}.team-portrait-grid{grid-template-columns:1fr;gap:38px}.team-portraits .section-top{align-items:flex-start;gap:18px;flex-direction:column}.team-portraits h2{margin-bottom:30px}}
+
+/* Center the reference octogram beside the wordmark. */
+.logo{display:inline-flex;align-items:center}.logo span{width:40px;height:40px;margin:0 0 0 10px;vertical-align:middle}
+@media(max-width:650px){.logo span{width:32px;height:32px;margin:0 0 0 8px}}
